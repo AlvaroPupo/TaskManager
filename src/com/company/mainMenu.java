@@ -9,7 +9,6 @@ public class mainMenu {
     private int response;
     private AddTasks goToAddTasks = new AddTasks(this);
 
-
     public void mainMenu () {
 
         System.out.println("Welcome to your Task Manager\nWhat would you like to do?\n1. Add a new task\n2. Remove a task\n3. Show list of all tasks\n4. Show list of completed tasks\n5. Show list of uncompleted tasks\n6. Edit a task\n7. Exit the program");
@@ -20,10 +19,13 @@ public class mainMenu {
                     goToAddTasks.newTask();
                     break;
                 case 2:
+                    goToAddTasks.deleteTasks();
                     break;
                 case 3:
+                    goToAddTasks.displayAll();
                     break;
                 case 4:
+                    goToAddTasks.completedTaskList();
                     break;
                 case 5:
                     break;
@@ -42,8 +44,6 @@ public class mainMenu {
             System.out.println("Please enter a number, not letters!!\n");
             scanner.nextInt();
             mainMenu();
-
-
         }
     }
 }
