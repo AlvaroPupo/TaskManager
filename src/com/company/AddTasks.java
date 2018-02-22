@@ -14,12 +14,12 @@ public class AddTasks{
     private String answer;
     private String date;
     private String markAsCompleted;
-    private String newTasks;
+    private String newCompletedTask;
     private String newTasks1;
     private String dueDate;
-    private String itIsDueOn;
+    private String itIsDueOn = " that it is due on: ";
     private int Int;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
     public List<String> addToArrayList = new ArrayList<>();
     public List<String> completed = new ArrayList<>();
     Calendar calendar = Calendar.getInstance();
@@ -43,11 +43,9 @@ public class AddTasks{
     date = scanner.nextLine();
     newTask.setDueDate(date);
     System.out.println("your new task is: " + newTask.getTitle() + "\nthat you added on " + newTask.getAddDate() + "\nand it is due on " + newTask.getDueDate() + "\nand it is " + newTask.getCompletedOrNot() + "\n");
-    itIsDueOn = " that it is due on: ";
-    dueDate = newTask.dueDate;
-    newTasks = response.concat(itIsDueOn);
-    newTasks1 = newTasks.concat(dueDate);
-    addToArrayList.add(newTasks1);
+    dueDate = newTask.dueDate;              //add the due date value into a string
+    newTasks1 = newTask.title;              //add the title value into a string
+    addToArrayList.add(newTasks1);          //add the string to the list of all tasks
     System.out.println("Would you like to add another task? y/n");
     answer = scanner.nextLine();
     if (answer.equalsIgnoreCase("y")){
@@ -68,7 +66,7 @@ public class AddTasks{
             System.out.println("This is all your tasks: ");
         }
             for (String list : addToArrayList) {
-                System.out.println(list);
+                System.out.println(list + " that is due on: " + dueDate);
             }
             System.out.println("\n" + "What do you want to do?\n1. see details of a task\n2. mark a task as complete\n3. delete a task\n4. go to the main menu");
             answer = scanner.nextLine();
@@ -106,20 +104,23 @@ public class AddTasks{
     }
     public void completedTaskList () {
 
+        Calendar calendar2 = Calendar.getInstance();
         if (completed.isEmpty()){
             System.out.println("You haven't completed any task" + "\n");
             menu.mainMenu();
         }else {
             System.out.println("Here is the list of the tasks that you've completed");
         }
-            int uno = 1;
-            for (String list : completed) {
-                System.out.println(uno++ + ". " + list);
-            }
-            System.out.println("Press 1 to delete them all" + "\nPress 2 to go to the main menu");
+            System.out.println("(Press 1 to delete them all)" + "\n(Press 2 to go to the main menu)");
+        int uno = 1;
+        for (String list : completed) {
+            System.out.println(uno++ + ". " + list + " has been completed on: " + dateFormat.format(calendar2.getTime()));
+        }
             answer = scanner.nextLine();
             if (answer.equals("1")) {
                 completed.removeAll(completed);
+                System.out.println("All completed tasks has been deleted" + "\n");
+                menu.mainMenu();
             } else if (answer.equals("2")) {
                 menu.mainMenu();
             } else {
@@ -141,9 +142,10 @@ public class AddTasks{
         }
         Int = scanner.nextInt();
         markAsCompleted = scanner.nextLine();
-        completed.add(markAsCompleted);
-        addToArrayList.remove(Int - 1);
-        System.out.println("The task has been mark as completed" + "\n");
+        newCompletedTask = addToArrayList.get(Int - 1);  //take user input and added it to a string
+        completed.add(newCompletedTask);                 //add the string to the completed tasks list
+        addToArrayList.remove(Int - 1);           //remove the user input from the list of all tasks.
+        System.out.println(newCompletedTask + " has been mark as completed" + "\n");
         menu.mainMenu();
     }
     public void seeDetails () {
