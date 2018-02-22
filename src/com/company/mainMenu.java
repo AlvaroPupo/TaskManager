@@ -28,6 +28,7 @@ public class mainMenu {
                     goToAddTasks.completedTaskList();
                     break;
                 case 5:
+                    goToAddTasks.uncompletedTaskList();
                     break;
                 case 6:
                     break;
