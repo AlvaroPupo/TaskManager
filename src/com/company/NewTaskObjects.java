@@ -42,7 +42,8 @@ public class NewTaskObjects {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate) {
+    public String setDueDate(String dueDate) {
         this.dueDate = dueDate;
+        return dueDate;
     }
 }
