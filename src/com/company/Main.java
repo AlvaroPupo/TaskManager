@@ -3,6 +3,8 @@ package com.company;
 public class Main{
 
     public static void main(String[] args) {
+
+        /** Good job! */
 /*
         Objectives
         1. User should be able to create new tasks.
@@ -22,6 +24,7 @@ public class Main{
         Details of task
         Date task was completed (if Complete) */
 
+        /** Naming, your classes should always be capitalized. MainMenu */
         mainMenu menu = new mainMenu();
         menu.mainMenu();
     }

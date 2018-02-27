@@ -7,6 +7,8 @@ public class CompletedObjects {
     private String completedOrNot;
     private String completedDueDate;
 
+    /**Unncessary. Yo ucould have one object, Task, with a boolean parameter, 'isCompleted', and then you'll know from every Task
+     * object if they're completed or not based on task.isCompleted(); */
     public CompletedObjects(String completedAddDate, String completedTitle, String completedOrNot, String completedDueDate) {
         this.completedAddDate = completedAddDate;
         this.completedTitle = completedTitle;

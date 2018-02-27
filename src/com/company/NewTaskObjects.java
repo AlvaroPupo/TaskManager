@@ -7,6 +7,9 @@ public class NewTaskObjects {
     public String completedOrNot;
     public String dueDate;
 
+    /**completed should be isCompleted, and should be a boolean. Also, instead of having NewTaskObjects and CompletedObjects, you could
+     * simply have one object, Task, and one of the parameters could be a boolean, 'isCompleted', then you'll know if that task is completed or
+     * not and won't require multiple objects to accomplish this. */
     public NewTaskObjects(String addDate, String title, String dueDate, String completedOrNot) {
         this.addDate = addDate;
         this.title = title;

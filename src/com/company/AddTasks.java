@@ -26,6 +26,12 @@ public class AddTasks{
     public List<NewTaskObjects> addToArrayList = new ArrayList<>();
     public List<NewTaskObjects> completed = new ArrayList<>();
 
+    /** Unnecessary. This could all be accomplished by creating a new task object and getting the values from methods that return Strings
+     * and date objects:
+     * Task task = new Task(getTitle(), getDetails(), getDueDate()); This will allow the user to more-easily understand what the Task's parameters
+     * are comprised of.
+     *
+     * */
     NewTaskObjects newTask = new NewTaskObjects("","","", "");
     NewTaskObjects newTaskCompleted = new NewTaskObjects("","","","");
 
@@ -100,6 +106,11 @@ public class AddTasks{
     public void deleteTasks() {
 
 
+        /** Rather than using multiple loops to access tasks for deletion, you could have one method that takes in user input and determines which
+         * Task they're editing and pass that into deleteTasks or markAsComplete, etc.
+         *
+         * So, Task task = addToArrayList.get(userInput); deleteTasks(task), then, in deleteTasks, addToArrayList.remove(task)*/
+
         if (addToArrayList.isEmpty()){
             System.out.println("There are no task to delete at the moment" + "\n");
             menu.mainMenu();
@@ -143,6 +154,7 @@ public class AddTasks{
             }
     }
     public void markAsComplete () {
+        /** See comment in deleteTasks at the top */
 
         newTaskCompleted = new NewTaskObjects(newTask.addDate,newTask.title,"","");
         if (addToArrayList.isEmpty()){
@@ -165,6 +177,7 @@ public class AddTasks{
         menu.mainMenu();
     }
     public void uncompletedTaskList () {
+
 
         if (addToArrayList.isEmpty()){
             System.out.println("There are no uncompleted tasks at this moment");
@@ -192,6 +205,8 @@ public class AddTasks{
     }
     public  void seeDetails() {
 
+        /** See comment in deleteTasks at the top */
+
         if (addToArrayList.isEmpty()) {
             System.out.println("There are no tasks to edit on your task manager" + "\n");
             menu.mainMenu();
@@ -206,6 +221,8 @@ public class AddTasks{
         editTask();
     }
     public void editTask(){
+
+        /** See comment in deleteTasks at the top */
 
         integer = scanner.nextInt();
         editedGame = addToArrayList.get(integer - 1);
