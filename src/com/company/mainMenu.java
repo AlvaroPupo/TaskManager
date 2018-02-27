@@ -17,21 +17,29 @@ public class mainMenu {
             switch (response = scanner.nextInt()) {
                 case 1:
                     goToAddTasks.newTask();
+                    break;
                 case 2:
                     goToAddTasks.deleteTasks();
+                    break;
                 case 3:
                     goToAddTasks.displayAll();
+                    break;
                 case 4:
                     goToAddTasks.completedTaskList();
+                    break;
                 case 5:
                     goToAddTasks.uncompletedTaskList();
+                    break;
                 case 6:
                     goToAddTasks.seeDetails();
+                    break;
                 case 7:
                     System.out.println("Have a good day, night or whatever!!");
                     System.exit(0);
+                    break;
                 default:
                     System.out.println("Please enter valid number!!\n");
+                    break;
             }
             mainMenu();
         } catch (InputMismatchException ime) {
