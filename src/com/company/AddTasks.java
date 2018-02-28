@@ -15,16 +15,23 @@ public class AddTasks{
     private String date;
     private NewTaskObjects newCompletedTask;
     private int integer;
-    private String addedDate;
     private String newString;
-    private String editTitle;
-    private String editDueDate;
     private NewTaskObjects editedGame;
     private String itIsDueOn = " that it is due on: ";
     private int Int;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
     public List<NewTaskObjects> addToArrayList = new ArrayList<>();
     public List<NewTaskObjects> completed = new ArrayList<>();
+
+    private static final String BLUE_BOLD = "\033[1;34m";
+    private static final String RESET = "\033[0m";
+    private static final String RED_BOLD = "\033[1;31m";
+    private static final String GREEN_BOLD = "\033[1;32m";
+    private static final String YELLOW_BOLD = "\033[1;33m";
+    private static final String PURPLE_BOLD = "\033[1;35m";
+    private static final String CYAN_BOLD = "\033[1;36m";
+    private static final String WHITE_BOLD = "\033[1;37m";
+    private static final String BLACK_BOLD = "\033[1;30m";
 
     NewTaskObjects newTask = new NewTaskObjects("","","", "");
     NewTaskObjects newTaskCompleted = new NewTaskObjects("","","","");
@@ -35,54 +42,55 @@ public class AddTasks{
     public void newTask() {
 
     newTask = new NewTaskObjects("","","", "");
-    System.out.println("What is the title of the task?");
+    System.out.println(BLUE_BOLD + "What is the title of the task?" + RESET);
     response = scanner.nextLine();
     newTask.setTitle(response);
 
     Calendar calendar = Calendar.getInstance();
     newTask.setAddDate(dateFormat.format(calendar.getTime()));
-    newTask.setCompletedOrNot("not completed");
+    newTask.setCompletedOrNot(RED_BOLD + "not completed" + RESET);
 
-    System.out.println("What is the deadline of the task?");
+    System.out.println(GREEN_BOLD + "What is the deadline of the task?" + RESET);
     date = scanner.nextLine();
     newTask.setDueDate(date);
     addToArrayList.add(newTask);
 
-    System.out.println("Would you like to add another task? y/n");
+    System.out.println(YELLOW_BOLD + "Would you like to add another task? y/n" + RESET);
     answer = scanner.nextLine();
     if (answer.equalsIgnoreCase("y")){
         newTask();
     } else if (answer.equalsIgnoreCase("n")){
         for (NewTaskObjects list : addToArrayList) {
-            System.out.println("you added: " + list.title + " on " + list.addDate + "\nand it is due on " + list.dueDate + "\nand it is " + list.completedOrNot + "\n");
+            System.out.println(WHITE_BOLD + "you added: " + GREEN_BOLD +list.title + RESET + " on " + CYAN_BOLD +list.addDate + RESET + "\nand it is due on " + PURPLE_BOLD +list.dueDate + RESET + "\nand it is " +RESET + list.completedOrNot + "\n");
         }
-        System.out.println("Press enter to go to the main menu");
+        System.out.println(CYAN_BOLD + "Press enter to go to the main menu" + RESET);
         response = scanner.nextLine();
     } else {
-        System.out.println("Please enter y or n");
+        System.out.println(RED_BOLD + "Please enter y or n" + RESET);
     }
         menu.mainMenu();
     }
     public void displayAll () {
 
         if (addToArrayList.isEmpty()) {
-            System.out.println("There are no tasks in your task manager" + "\n");
+            System.out.println(RED_BOLD + "There are no tasks in your task manager" + "\n" + RESET);
             menu.mainMenu();
         } else {
-            System.out.println("This is all your tasks: ");
+            System.out.println(BLACK_BOLD + "This is all your tasks: " + RESET);
         }
             int uno = 1;
             for (NewTaskObjects list : addToArrayList) {
-                System.out.println(uno++ + ". " + list.title + " " + itIsDueOn + " " + list.dueDate + "\nand it is " + list.completedOrNot);
+                System.out.println(WHITE_BOLD + uno++ + ". " + list.title + " " + itIsDueOn + " " + list.dueDate + "\nand it is " + RESET + list.completedOrNot);
             }
             if (completed.isEmpty()){
-                System.out.println("\n" + "What do you want to do?\n1. see details of a task\n2. mark a task as complete\n3. delete a task\n4. go to the main menu");
+                System.out.println("\n" + GREEN_BOLD + "What do you want to do?" + RESET + BLUE_BOLD + "\n1. see details of a task" + RESET + YELLOW_BOLD + "\n2. mark a task as complete" + RESET + PURPLE_BOLD + "\n3. delete a task" + RESET + CYAN_BOLD + "\n4. go to the main menu" + RESET);
             } else {
         for (NewTaskObjects list2: completed) {
-            System.out.println(uno++ + ". " + list2.title + " was added on " + list2.addDate + "\nand it was completed on " + newCompletedTask.dueDate);
+            System.out.println(WHITE_BOLD + uno++ + ". " + list2.title + " was added on " + list2.addDate + "\nand it was completed on " + newCompletedTask.dueDate + RESET);
         }
-                System.out.println("\n" + "What do you want to do?\n1. see details of a task\n2. mark a task as complete\n3. delete a task\n4. go to the main menu");
+                System.out.println("\n" + GREEN_BOLD + "What do you want to do?" + RESET + BLUE_BOLD + "\n1. see details of a task" + RESET + YELLOW_BOLD + "\n2. mark a task as complete" + RESET + PURPLE_BOLD + "\n3. delete a task" + RESET + CYAN_BOLD + "\n4. go to the main menu" + RESET);
             }
+            scanner.nextLine();
             answer = scanner.nextLine();
             if (answer.equals("1")) {
                 seeDetails();
@@ -93,7 +101,7 @@ public class AddTasks{
             } else if (answer.equals("4")){
                 menu.mainMenu();
             } else {
-                System.out.println("Enter a valid number!!" + "\n");
+                System.out.println(RED_BOLD + "Enter a valid number!!" + "\n" + RESET);
                 menu.mainMenu();
             }
     }
@@ -101,44 +109,43 @@ public class AddTasks{
 
 
         if (addToArrayList.isEmpty()){
-            System.out.println("There are no task to delete at the moment" + "\n");
+            System.out.println(RED_BOLD + "There are no task to delete at the moment" + "\n" + RESET);
             menu.mainMenu();
         } else {
-            System.out.println("What task would you like to delete?\nPlease enter the number besides the task!!");
+            System.out.println(YELLOW_BOLD + "What task would you like to delete?" + RESET + CYAN_BOLD +"\nPlease enter the number besides the task!!" + RESET);
         }
             int uno = 1;
             for (NewTaskObjects list : addToArrayList) {
-                System.out.println(uno++ + ". " + list.title);
+                System.out.println(WHITE_BOLD + uno++ + ". " + list.title + RESET);
         }
             Int = scanner.nextInt();
             addToArrayList.remove(Int - 1);
-            System.out.println("The task has been removed from the task manager" + "\n");
+            System.out.println(RED_BOLD + "The task has been removed from the task manager" + "\n" + RESET);
             menu.mainMenu();
             scanner.nextLine();
         }
-
     public void completedTaskList () {
 
         if (completed.isEmpty()){
-            System.out.println("You haven't completed any task" + "\n");
+            System.out.println(RED_BOLD + "You haven't completed any task" + "\n" + RESET);
             menu.mainMenu();
         }else {
-            System.out.println("Here is the list of the tasks that you've completed");
-            System.out.println("(Press 1 to delete them all)\n(Press 2 to go to the main menu)");
+            System.out.println(WHITE_BOLD + "Here is the list of the tasks that you've completed" + RESET);
+            System.out.println(YELLOW_BOLD + "(Press 1 to delete them all)" + RESET + CYAN_BOLD + "\n(Press 2 to go to the main menu)" + RESET);
         int uno = 1;
         for (NewTaskObjects list : completed) {
-            System.out.println(uno++ + ". " + list.title + " has been completed on: " + list.dueDate);
+            System.out.println(WHITE_BOLD + uno++ + ". " + list.title + " has been completed on: " + list.dueDate + RESET);
         }
         }
             newString = scanner.nextLine();
             if (newString.equals("1")) {
                 completed.removeAll(completed);
-                System.out.println("All completed tasks has been deleted" + "\n");
+                System.out.println(BLUE_BOLD + "All completed tasks has been deleted" + "\n" + RESET);
                 menu.mainMenu();
             } else if (newString.equals("2")) {
                 menu.mainMenu();
             } else {
-                System.out.println("Please enter a valid number" + "\n");
+                System.out.println(RED_BOLD + "Please enter a valid number" + "\n" + RESET);
                 completedTaskList();
             }
     }
@@ -146,13 +153,13 @@ public class AddTasks{
 
         newTaskCompleted = new NewTaskObjects(newTask.addDate,newTask.title,"","");
         if (addToArrayList.isEmpty()){
-            System.out.println("There are no tasks on your task manager" + "\n");
+            System.out.println(RED_BOLD + "There are no tasks on your task manager" + "\n" + RESET);
             menu.mainMenu();
         }else {
-            System.out.println("Which task would you like to mark as completed\nPlease enter the number");
+            System.out.println(GREEN_BOLD + "Which task would you like to mark as completed" + RESET + CYAN_BOLD + "\nPlease enter the number" + RESET);
         int uno = 1;
         for (NewTaskObjects list: addToArrayList) {
-            System.out.println(uno++ + ". " + list.title);
+            System.out.println(WHITE_BOLD + uno++ + ". " + list.title + RESET);
         }
         }
         Int = scanner.nextInt();
@@ -161,23 +168,23 @@ public class AddTasks{
         newCompletedTask.setDueDate(dateFormat.format(calendar1.getTime()));
         completed.add(newCompletedTask);                //add the string to the completed tasks list
         addToArrayList.remove(Int - 1);
-        System.out.println(newCompletedTask.title + " has been marked as completed" + "\n");
+        System.out.println(BLUE_BOLD + newCompletedTask.title + RESET + BLACK_BOLD + " has been marked as completed" + "\n" + RESET);
         menu.mainMenu();
     }
     public void uncompletedTaskList () {
 
         if (addToArrayList.isEmpty()){
-            System.out.println("There are no uncompleted tasks at this moment");
+            System.out.println(RED_BOLD + "There are no uncompleted tasks at this moment" + RESET);
             System.out.println();
             menu.mainMenu();
         }else {
-            System.out.println("Here is the list of the task you haven't completed");
+            System.out.println(PURPLE_BOLD + "Here is the list of the task you haven't completed" + RESET);
         }
         int uno = 1;
         for (NewTaskObjects list3 : addToArrayList) {
-            System.out.println(uno++ + ". " + list3.title + " that was added on " + list3.addDate + "\nand it is not completed.");
+            System.out.println(WHITE_BOLD + uno++ + ". " + list3.title + " that was added on " + RESET + CYAN_BOLD + list3.addDate + RESET + WHITE_BOLD + "\nand it is not completed." + RESET);
         }
-        System.out.println("\n" + "What would you like to do?\n1. Edit a task\n2. mark as complete\n3. delete a task\n4. go to the main menu");
+        System.out.println(BLUE_BOLD + "\n" + "What would you like to do?" + RESET + GREEN_BOLD + "\n1. Edit a task" + RESET + YELLOW_BOLD + "\n2. mark as complete" + RESET + PURPLE_BOLD + "\n3. delete a task" + RESET + WHITE_BOLD + "\n4. go to the main menu" + RESET);
         answer = scanner.nextLine();
 
         if (answer.equals("1")){
@@ -187,55 +194,50 @@ public class AddTasks{
         } else if (answer.equals("3")){
             deleteTasks();
         } else if (answer.equals("4")){
+            System.out.println(RED_BOLD + "Please enter a valid number" + "\n" + RESET);
             menu.mainMenu();
         }
     }
     public  void seeDetails() {
 
         if (addToArrayList.isEmpty()) {
-            System.out.println("There are no tasks to edit on your task manager" + "\n");
+            System.out.println(RED_BOLD + "There are no tasks to edit on your task manager" + "\n" + RESET);
             menu.mainMenu();
         } else {
-            System.out.println("These are the details of the tasks you have added:" + "\n");
+            System.out.println(BLUE_BOLD + "These are the details of the tasks you have added:" + "\n" + RESET);
             int uno = 1;
             for (NewTaskObjects diplayDetails : addToArrayList) {
-                System.out.println(uno++ + ". " + diplayDetails.title + "\nthat you added on " + diplayDetails.addDate + "\nand is due on " + diplayDetails.dueDate + "\nit is " + diplayDetails.completedOrNot + "\n");
+                System.out.println(WHITE_BOLD + uno++ + ". " + diplayDetails.title + "\nthat you added on " + diplayDetails.addDate + "\nand is due on " + diplayDetails.dueDate + "\nit is " + diplayDetails.completedOrNot + "\n" + RESET);
             }
         }
-        System.out.println("Which one would you like to change?\nPlease enter the number");
+        System.out.println(YELLOW_BOLD + "Which one would you like to change?" + RESET + GREEN_BOLD +"\nPlease enter the number" + RESET);
         editTask();
     }
     public void editTask(){
 
         integer = scanner.nextInt();
         editedGame = addToArrayList.get(integer - 1);
-        Calendar calendar2 = Calendar.getInstance();
 
-        System.out.println("What would you like to change?\n1. Name\n2. Due date");
+        System.out.println(BLUE_BOLD + "What would you like to change?" + RESET + CYAN_BOLD + "\n1. Name" + RESET + GREEN_BOLD+ "\n2. Due date" + RESET);
 
         switch (scanner.nextInt()) {
 
             case 1 :
-                System.out.println("What will be the new name for the task " + editedGame.title);
+                System.out.println(WHITE_BOLD + "What will be the new name for the task " + RESET + BLUE_BOLD +  editedGame.title + RESET );
                 scanner.nextLine();
                 addToArrayList.get(integer - 1).setTitle(scanner.nextLine());
                 break;
-
             case 2 :
-                System.out.println("What would be the new due date for the task " + editedGame.title);
+                System.out.println(BLUE_BOLD + "What would be the new due date for the task " + editedGame.title + RESET);
                 scanner.nextLine();
                 addToArrayList.get(integer - 1).setDueDate(scanner.nextLine());
                 break;
-
             default:
-                System.out.println("Please enter a valid number");
+                System.out.println(RED_BOLD + "Please enter a valid number" + RESET);
                 editTask();
-
         }
-        System.out.println("The modifications have been realized" + "\n");
+        System.out.println(GREEN_BOLD + "The modifications have been realized" + "\n" + RESET);
         menu.mainMenu();
-
-
     }
 }
 
