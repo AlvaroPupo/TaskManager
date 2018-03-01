@@ -1,5 +1,6 @@
 package com.company;
 
+import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -56,6 +57,14 @@ public class mainMenu {
             System.out.println(RED_BOLD + "Please enter a number, not letters!!\n" + RESET);
             scanner.nextLine();
             mainMenu();
+        }catch (IndexOutOfBoundsException ioobe){
+            System.out.println(RED_BOLD + "Choose a valid option on the list\n" + RESET);
+            scanner.nextLine();
+            mainMenu();
+        }catch (DateTimeParseException ex){
+            System.out.print(RED_BOLD + "Please enter a valid date\n\n" + RESET);
+            scanner.nextLine();
+            goToAddTasks.newTask();
         }
     }
 }
