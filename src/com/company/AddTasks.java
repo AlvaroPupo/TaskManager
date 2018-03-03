@@ -1,10 +1,11 @@
 package com.company;
 
-import java.text.SimpleDateFormat;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.Arrays;
 
 public class AddTasks {
 
@@ -13,16 +14,16 @@ public class AddTasks {
     private String response;
     private String answer;
     private String date;
-    private String newDueDate;
     private NewTaskObjects newCompletedTask;
     private int integer;
     private String newString;
     private NewTaskObjects editedGame;
     private String itIsDueOn = " that it is due on: ";
     private int Int;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
     public List<NewTaskObjects> addToArrayList = new ArrayList<>();
     public List<NewTaskObjects> completed = new ArrayList<>();
+
+    public FileWriter fw;
 
     private static final String BLUE_BOLD = "\033[1;34m";
     private static final String RESET = "\033[0m";
@@ -37,52 +38,71 @@ public class AddTasks {
     NewTaskObjects newTask = new NewTaskObjects("", "", "", "");
     NewTaskObjects newTaskCompleted = new NewTaskObjects("", "", "", "");
 
-    private LocalDate time = LocalDate.now();
+    private LocalDateTime time = LocalDateTime.now();
     private LocalDate dueDate;
     private LocalDate newDueDateLocalDate;
-    private DateTimeFormatter mDY = DateTimeFormatter.ofPattern("MMMM d, YYYY");
+    private DateTimeFormatter mDY = DateTimeFormatter.ofPattern("MMMM d, YYYY hh:mm:ss a");
+    private DateTimeFormatter mdY2 = DateTimeFormatter.ofPattern("MMMM d, YYYY");
 
     public AddTasks(mainMenu menu) {
         this.menu = menu;
     }
 
-    public void newTask() {
+    public void newTask() throws IOException{
 
+//        fw = new FileWriter("text1");
         newTask = new NewTaskObjects("", "", "", "");
         String s = time.format(mDY);
         newTask.setAddDate(s);
         newTask.setCompletedOrNot(RED_BOLD + "not completed" + RESET);
 
-        System.out.println(GREEN_BOLD + "What is the deadline of the task? (yyyy-mm-dd)" + RESET);
-        date = scanner.nextLine();
-        dueDate = LocalDate.parse(date);
-        if (dueDate.isBefore(LocalDate.now())){
-            System.out.println(CYAN_BOLD + "That date has already passed, try to add a date in the future\n" + RESET);
-            newTask();
-        } else if (dueDate.isAfter(LocalDate.now())) {
-            newTask.setDueDate(dueDate.format(mDY));
-        }
         System.out.println(BLUE_BOLD + "What is the title of the task?" + RESET);
         response = scanner.nextLine();
         newTask.setTitle(response);
-
-        addToArrayList.add(newTask);
-
-        System.out.println(YELLOW_BOLD + "Would you like to add another task? y/n" + RESET);
-        answer = scanner.nextLine();
-        if (answer.equalsIgnoreCase("y")) {
-            newTask();
-        } else if (answer.equalsIgnoreCase("n")) {
-            for (NewTaskObjects list : addToArrayList) {
-                System.out.println(WHITE_BOLD + "you added: " + GREEN_BOLD + list.title + RESET + " on " + CYAN_BOLD + list.addDate + RESET + "\nand it is due on " + PURPLE_BOLD + list.dueDate + RESET + "\nand it is " + RESET + list.completedOrNot + "\n");
-            }
-            System.out.println(CYAN_BOLD + "Press enter to go to the main menu" + RESET);
-            response = scanner.nextLine();
-        } else {
-            System.out.println(RED_BOLD + "Please enter y or n" + RESET);
-        }
-        menu.mainMenu();
+        deadLine();
     }
+    public void deadLine() {
+
+        System.out.println(GREEN_BOLD + "What is the deadline of the task? (yyyy-mm-dd)" + RESET);
+        date = scanner.nextLine();
+        dueDate = LocalDate.parse(date);
+        if (dueDate.isBefore(LocalDate.now())) {
+            System.out.println(CYAN_BOLD + "That date has already passed, try to add a date in the future\n" + RESET);
+            deadLine();
+        } else if (dueDate.isAfter(LocalDate.now())) {
+            newTask.setDueDate(dueDate.format(mdY2));
+            addToArrayList.add(newTask);
+        }
+//        try {
+//            for (int i = 0; i < 1; i++)
+//                fw.write(String.valueOf(newTask));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        again();
+    }
+        public void again () {
+            System.out.println(YELLOW_BOLD + "Would you like to add another task? y/n" + RESET);
+            answer = scanner.nextLine();
+            if (answer.equalsIgnoreCase("y")) {
+                try {
+                    newTask();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if (answer.equalsIgnoreCase("n")) {
+                for (NewTaskObjects list : addToArrayList) {
+                    System.out.println(WHITE_BOLD + "you added: " + GREEN_BOLD + list.title + RESET + " on " + CYAN_BOLD + list.addDate + RESET + "\nand it is due on " + PURPLE_BOLD + list.dueDate + RESET + "\nand it is " + RESET + list.completedOrNot + "\n");
+                }
+                System.out.println(CYAN_BOLD + "Press enter to go to the main menu" + RESET);
+                response = scanner.nextLine();
+            } else {
+                System.out.println(RED_BOLD + "Please enter y or n" + RESET);
+                again();
+            }
+            menu.mainMenu();
+        }
     public void displayAll() {
 
         if (addToArrayList.isEmpty()) {
@@ -96,12 +116,12 @@ public class AddTasks {
             System.out.println(WHITE_BOLD + uno++ + ". " + list.title + " " + itIsDueOn + " " + list.dueDate + "\nand it is " + RESET + list.completedOrNot);
         }
         if (completed.isEmpty()) {
-            System.out.println("\n" + GREEN_BOLD + "What do you want to do?" + RESET + BLUE_BOLD + "\n1. see details of a task" + RESET + YELLOW_BOLD + "\n2. mark a task as complete" + RESET + PURPLE_BOLD + "\n3. delete a task" + RESET + CYAN_BOLD + "\n4. go to the main menu" + RESET);
+            System.out.println("\n" + GREEN_BOLD + "What do you want to do?" + RESET + BLUE_BOLD + "\n1. see details of a task" + RESET + YELLOW_BOLD + "\n2. mark a task as complete" + RESET + PURPLE_BOLD + "\n3. delete a task" + RESET + CYAN_BOLD + "\n4. Sort tasks" + RESET + YELLOW_BOLD + "\n5. go to the main menu" + RESET);
         } else {
             for (NewTaskObjects list2 : completed) {
-                System.out.println(WHITE_BOLD + uno++ + ". " + list2.title + " was added on " + list2.addDate + "\nand it was completed on " + newCompletedTask.dueDate + RESET);
+                System.out.println(WHITE_BOLD + uno++ + ". " + list2.title + " was added on " + list2.addDate + "\nand it was completed on " + time.format(mDY) + RESET);
             }
-            System.out.println("\n" + GREEN_BOLD + "What do you want to do?" + RESET + BLUE_BOLD + "\n1. see details of a task" + RESET + YELLOW_BOLD + "\n2. mark a task as complete" + RESET + PURPLE_BOLD + "\n3. delete a task" + RESET + CYAN_BOLD + "\n4. go to the main menu" + RESET);
+            System.out.println("\n" + GREEN_BOLD + "What do you want to do?" + RESET + BLUE_BOLD + "\n1. see details of a task" + RESET + YELLOW_BOLD + "\n2. mark a task as complete" + RESET + PURPLE_BOLD + "\n3. delete a task" + RESET + CYAN_BOLD +"\n4. Sort tasks" + RESET + YELLOW_BOLD + "\n5. go to the main menu" + RESET);
         }
         answer = scanner.nextLine();
         if (answer.equals("1")) {
@@ -110,16 +130,16 @@ public class AddTasks {
             markAsComplete();
         } else if (answer.equals("3")) {
             deleteTasks();
-        } else if (answer.equals("4")) {
+        }else if (answer.equals("4")) {
+            sortTasksMenu();
+        } else if (answer.equals("5")) {
             menu.mainMenu();
         } else {
             System.out.println(RED_BOLD + "Enter a valid number!!" + "\n" + RESET);
             menu.mainMenu();
         }
     }
-
     public void deleteTasks() {
-
 
         if (addToArrayList.isEmpty()) {
             System.out.println(RED_BOLD + "There are no task to delete at the moment" + "\n" + RESET);
@@ -137,7 +157,6 @@ public class AddTasks {
         menu.mainMenu();
         scanner.nextLine();
     }
-
     public void completedTaskList() {
 
         if (completed.isEmpty()) {
@@ -148,7 +167,7 @@ public class AddTasks {
             System.out.println(YELLOW_BOLD + "(Press 1 to delete them all)" + RESET + CYAN_BOLD + "\n(Press 2 to go to the main menu)" + RESET);
             int uno = 1;
             for (NewTaskObjects list : completed) {
-                System.out.println(WHITE_BOLD + uno++ + ". " + list.title + " has been completed on: " + list.dueDate + RESET);
+                System.out.println(WHITE_BOLD + uno++ + ". " + list.title + " has been completed on: " + time.format(mDY) + RESET);
             }
         }
         newString = scanner.nextLine();
@@ -163,7 +182,6 @@ public class AddTasks {
             completedTaskList();
         }
     }
-
     public void markAsComplete() {
 
         newTaskCompleted = new NewTaskObjects(newTask.addDate, newTask.title, "", "");
@@ -185,7 +203,6 @@ public class AddTasks {
         System.out.println(BLUE_BOLD + newCompletedTask.title + RESET + BLACK_BOLD + " has been marked as completed" + "\n" + RESET);
         menu.mainMenu();
     }
-
     public void uncompletedTaskList() {
 
         if (addToArrayList.isEmpty()) {
@@ -213,7 +230,6 @@ public class AddTasks {
             menu.mainMenu();
         }
     }
-
     public void seeDetails() {
 
         if (addToArrayList.isEmpty()) {
@@ -226,10 +242,15 @@ public class AddTasks {
                 System.out.println(WHITE_BOLD + uno++ + ". " + diplayDetails.title + "\nthat you added on " + diplayDetails.addDate + "\nand is due on " + diplayDetails.dueDate + "\nit is " + diplayDetails.completedOrNot + "\n" + RESET);
             }
         }
-        System.out.println(YELLOW_BOLD + "Which one would you like to change?" + RESET + GREEN_BOLD + "\nPlease enter the number" + RESET);
-        editTask();
+        System.out.println(BLUE_BOLD + "Please choose one of the following:" + RESET + CYAN_BOLD +  "\n1. edit a task" + RESET + GREEN_BOLD + "\n2. go to main menu" + RESET);
+        response = scanner.nextLine();
+        if (response.equals("1")){
+            System.out.println(YELLOW_BOLD + "Which one would you like to change?" + RESET + GREEN_BOLD + "\nPlease enter the number" + RESET);
+            editTask();
+        }else if (response.equals("2")) {
+            menu.mainMenu();
+        }
     }
-
     public void editTask() {
 
         integer = scanner.nextInt();
@@ -245,11 +266,18 @@ public class AddTasks {
                 addToArrayList.get(integer - 1).setTitle(scanner.nextLine());
                 break;
             case 2:
-                System.out.println(BLUE_BOLD + "What would be the new due date for the task " + editedGame.title + RESET);
-                scanner.nextLine();
-                newDueDate = scanner.nextLine();
-                newDueDateLocalDate = LocalDate.parse(newDueDate);
-                addToArrayList.get(integer - 1).setDueDate(newDueDateLocalDate.format(mDY));
+                do { scanner.nextLine();
+                    System.out.println(BLUE_BOLD + "What would be the new due date for the task " + editedGame.title + "? (yyyy-mm-dd)" + RESET);
+                    String newDueDate;
+                    newDueDate = scanner.nextLine();
+                    newDueDateLocalDate = LocalDate.parse(newDueDate);
+                    addToArrayList.get(integer - 1).setDueDate(String.valueOf(newDueDateLocalDate.format(mDY)));
+                    if (newDueDateLocalDate.isBefore(LocalDate.now())) {
+                        System.out.println(CYAN_BOLD + "That date has already passed, try to add a date in the future\nPress enter to try again" + RESET);
+                    } else if (newDueDateLocalDate.isAfter(LocalDate.now())) {
+                        newTask.setDueDate(newDueDateLocalDate.format(mDY));
+                    }
+                }while (newDueDateLocalDate.isBefore(LocalDate.now()));
                 break;
             default:
                 System.out.println(RED_BOLD + "Please enter a valid number" + RESET);
@@ -258,16 +286,30 @@ public class AddTasks {
         System.out.println(GREEN_BOLD + "The modifications have been realized" + "\n" + RESET);
         menu.mainMenu();
     }
+    public  void sortTasksMenu () {
+        System.out.println(CYAN_BOLD + "How would you like to sort your tasks" + RESET + PURPLE_BOLD + "\nEnter a number to select." + RESET + BLACK_BOLD + "\n1. by Name" + RESET + YELLOW_BOLD + "\n2. by Due date" + RESET + BLUE_BOLD + "\n3. by Add date" + RESET + WHITE_BOLD + "\n4. by Completed date" + RESET + CYAN_BOLD + "\n5. go to main menu" + RESET);
 
-    public void sortTasks() {
+        response = scanner.nextLine();
+        if (response.equals("1")){
+        sortTasks();
+        }else if (response.equals("2")){
 
-        int[] whatever = new int [6];
-        for (int i = 0; i < 6; i++) {
-            whatever[i] = (int)(Math.random() * 100) + 1;
-            Arrays.sort(whatever);
+        }else if (response.equals("3")){
+
+        }else if (response.equals("4")){
+
+        }else{
+            menu.mainMenu();
         }
-
     }
-}
+    public void sortTasks() {
+//
+//        for (NewTaskObjects sort : addToArrayList) {
+//            sort(newTask.title);
+//            Collections.sort(newTask);
+//            System.out.println(Arrays.toString(new NewTaskObjects[]{sort}));
+        }
+    }
+//}
 
 
