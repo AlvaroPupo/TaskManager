@@ -7,6 +7,7 @@ public class NewTaskObjects {
     public String completedOrNot;
     public String dueDate;
 
+
     public NewTaskObjects(String addDate, String title, String dueDate, String completedOrNot) {
         this.addDate = addDate;
         this.title = title;

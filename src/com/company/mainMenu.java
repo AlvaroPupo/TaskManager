@@ -1,8 +1,5 @@
 package com.company;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -12,7 +9,6 @@ public class mainMenu {
         private Scanner scanner = new Scanner(System.in);
         private int response;
         private AddTasks goToAddTasks = new AddTasks(this);
-
 
         private static final String BLUE_BOLD = "\033[1;34m";
         private static final String RESET = "\033[0m";
@@ -69,9 +65,7 @@ public class mainMenu {
                 System.out.print(RED_BOLD + "Please enter a valid date and try again\n\n" + RESET);
                 scanner.nextLine();
                 mainMenu();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            }
             }
         }
 

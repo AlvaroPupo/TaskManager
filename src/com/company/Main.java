@@ -1,11 +1,8 @@
 package com.company;
 
-import java.io.FileWriter;
-import java.io.IOException;
-
 public class Main{
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) {
 /*
         Objectives
         1. User should be able to create new tasks.
